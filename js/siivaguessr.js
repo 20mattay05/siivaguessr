@@ -588,7 +588,11 @@ document.getElementById('dailyBtn').addEventListener('click', function () {
 });
 document.getElementById('endlessBtn').addEventListener('click', function () {
     this.blur();
-
+    guessInput.value = "";
+    let randomDaily = randomDailyHashes[Math.floor(Math.random()*randomDailyHashes.length)];
+    let sickoMode = document.getElementById('dailySickoSwitch').checked;
+    activeQuizQuestionIndex = -1;
+    loadQuestion(randomDaily, sickoMode ? QuestionMode.SICKO : QuestionMode.NORMAL);
 });
 document.getElementById('customQuizBtn').addEventListener('click', function () {
     this.blur();
