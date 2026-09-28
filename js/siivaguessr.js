@@ -586,6 +586,10 @@ document.getElementById('dailyBtn').addEventListener('click', function () {
     activeQuizQuestionIndex = -1;
     loadQuestion(simpleCircleCipher(daily.hash), sickoMode ? QuestionMode.SICKO : daily.mode, todaysDailyNumber);
 });
+document.getElementById('endlessBtn').addEventListener('click', function () {
+    this.blur();
+
+});
 document.getElementById('customQuizBtn').addEventListener('click', function () {
     this.blur();
     showView('customQuizView');
