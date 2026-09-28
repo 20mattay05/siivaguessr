@@ -576,8 +576,10 @@ const populateMultiJokeTable = function (jokesArray, isReverseMode = false) {
     });
 };
 
+let endlessMode = false;
 document.getElementById('dailyBtn').addEventListener('click', function () {
     this.blur();
+    endlessMode = false;
     loadedDailyDateString = todaysDailyDateString;
     let sickoMode = document.getElementById('dailySickoSwitch').checked;
     if (dailyResults[loadedDailyDateString] && !dailyResults[loadedDailyDateString].sickoMode) {
@@ -586,9 +588,11 @@ document.getElementById('dailyBtn').addEventListener('click', function () {
     activeQuizQuestionIndex = -1;
     loadQuestion(simpleCircleCipher(daily.hash), sickoMode ? QuestionMode.SICKO : daily.mode, todaysDailyNumber);
 });
+
 document.getElementById('endlessBtn').addEventListener('click', function () {
     this.blur();
     guessInput.value = "";
+    endlessMode = true;
     let randomDaily = randomDailyHashes[Math.floor(Math.random()*randomDailyHashes.length)];
     let sickoMode = document.getElementById('dailySickoSwitch').checked;
     activeQuizQuestionIndex = -1;
@@ -868,8 +872,8 @@ ${statLine}${!lost && playingTodaysDaily && winStreak > 1 ? '\nOn a win streak o
 https://siivaguessr.meme`;
         show('shareResultsContainer');
     } else {
-        activeQuizQuestionIndex++;
-        if (activeQuizQuestionIndex === activeQuiz.length) {
+        activeQuizQuestionIndex += endlessMode ? 0 : 1;
+        if (activeQuizQuestionIndex === activeQuiz.length && !endlessMode) {
             show('quizResultsBtn');
         } else {
             show('nextQuestionBtn');
@@ -890,7 +894,13 @@ const getStatIcon = function (percentCorrect) {
 
 document.getElementById('nextQuestionBtn').addEventListener('click', function () {
     this.blur();
-    loadQuestion(simpleCircleCipher(activeQuiz[activeQuizQuestionIndex].id), parseInt(activeQuiz[activeQuizQuestionIndex].mode));
+    let nextQuestion = randomDailyHashes[Math.floor(Math.random()*randomDailyHashes.length)];
+    let nextMode = document.getElementById('dailySickoSwitch').checked ? QuestionMode.SICKO : QuestionMode.NORMAL;
+    if (!endlessMode) {
+        nextQuestion = simpleCircleCipher(activeQuiz[activeQuizQuestionIndex].id);
+        nextMode = parseInt(activeQuiz[activeQuizQuestionIndex].mode);
+    }
+    loadQuestion(nextQuestion, nextMode);
 });
 
 document.getElementById('quizResultsBtn').addEventListener('click', function () {
