@@ -900,6 +900,7 @@ document.getElementById('nextQuestionBtn').addEventListener('click', function ()
         nextQuestion = simpleCircleCipher(activeQuiz[activeQuizQuestionIndex].id);
         nextMode = parseInt(activeQuiz[activeQuizQuestionIndex].mode);
     }
+    guessInput.value = "";
     loadQuestion(nextQuestion, nextMode);
 });
 
